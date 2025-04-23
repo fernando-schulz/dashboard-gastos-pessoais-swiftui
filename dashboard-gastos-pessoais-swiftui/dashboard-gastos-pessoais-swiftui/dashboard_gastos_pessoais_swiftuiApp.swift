@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct dashboard_gastos_pessoais_swiftuiApp: App {
+    let persistenceController = PersistenceController.shared
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentViewController()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
