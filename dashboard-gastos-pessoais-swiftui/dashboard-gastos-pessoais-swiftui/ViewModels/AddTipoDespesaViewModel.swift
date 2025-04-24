@@ -11,6 +11,7 @@ class AddTipoDespesaViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     @Published var nome: String = ""
+    @Published var selectedColor: Color = .blue
     @Environment(\.managedObjectContext) var context
     
     func salvarTipoDespesa() {
@@ -23,6 +24,7 @@ class AddTipoDespesaViewModel: ObservableObject {
         let newTipoDespesa = TipoDespesaEntity(context: context)
         newTipoDespesa.id = UUID()
         newTipoDespesa.nome = nome
+        newTipoDespesa.cor = selectedColor.toHex()
         
         do {
             try context.save()

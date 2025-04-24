@@ -15,11 +15,16 @@ struct AddTipoDespesaViewController: View {
     
     var body: some View {
         VStack {
-            CustomTextField(label: "Nome", placeholder: "Nome", text: $viewModel.nome) {
+            CustomTextField(label: "Nome", text: $viewModel.nome) {
                 TextField("Nome", text: $viewModel.nome)
+                    .foregroundColor(.white)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
             }
+            
+            ColorPicker("Escolha uma cor", selection: $viewModel.selectedColor)
+                .padding()
+                .foregroundColor(Color("TextColor"))
             
             Button(action: {
                 viewModel.salvarTipoDespesa()
@@ -30,11 +35,11 @@ struct AddTipoDespesaViewController: View {
                 }
             }) {
                 Text("Salvar")
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("TextColor"))
                     .fontWeight(.semibold)
             }
             .frame(width: 175, height: 40)
-            .background(.white)
+            .background(Color("Secondary"))
             .cornerRadius(20)
             .accessibilityIdentifier("Salvar Tipo Despesa")
             
@@ -52,7 +57,7 @@ struct AddTipoDespesaViewController: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black)
+        .background(Color("Background"))
     }
 }
 

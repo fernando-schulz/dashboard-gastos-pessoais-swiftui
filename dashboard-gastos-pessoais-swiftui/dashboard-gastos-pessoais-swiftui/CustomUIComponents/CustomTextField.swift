@@ -10,7 +10,6 @@ import SwiftUI
 struct CustomTextField<Content: View>: View {
     
     var label: String
-    var placeholder: String
     @Binding var text: String
     let content: () -> Content
     
@@ -24,7 +23,7 @@ struct CustomTextField<Content: View>: View {
             if shouldShowLabel {
                 Text(label)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color("Placeholder"))
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.5), value: text)
             }
@@ -33,18 +32,20 @@ struct CustomTextField<Content: View>: View {
         }
         .frame(height: 25)
         .padding()
-        .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 0.5))
+        .background(RoundedRectangle(cornerRadius: 8).stroke(Color.white, lineWidth: 0.5))
     }
 }
 
 #Preview {
     CustomTextFieldPreview()
+        .padding()
+        .background(Color("Background"))
 }
 
 struct CustomTextFieldPreview: View {
     @State private var text: String = ""
     
     var body: some View {
-        CustomTextField(label: "Label", placeholder: "Placeholder", text: $text, content: { TextField("Teste", text: $text) })
+        CustomTextField(label: "Label", text: $text, content: { TextField("Teste", text: $text) })
     }
 }
