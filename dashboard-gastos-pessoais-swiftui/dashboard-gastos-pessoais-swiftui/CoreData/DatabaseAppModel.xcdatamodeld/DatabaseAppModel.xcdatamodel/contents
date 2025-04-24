@@ -8,6 +8,7 @@
         <relationship name="tipo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipoDespesaEntity"/>
     </entity>
     <entity name="TipoDespesaEntity" representedClassName="TipoDespesaEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="cor" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="nome" optional="YES" attributeType="String"/>
     </entity>
