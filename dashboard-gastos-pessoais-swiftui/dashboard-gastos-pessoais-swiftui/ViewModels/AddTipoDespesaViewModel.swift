@@ -6,24 +6,29 @@
 //
 
 import SwiftUICore
+import CoreData
 
 class AddTipoDespesaViewModel: ObservableObject {
     
     @Published var errorMessage: String?
-    @Published var nome: String = ""
+    @Published var nomeTipoDespesa: String = ""
     @Published var selectedColor: Color = .blue
-    @Environment(\.managedObjectContext) var context
+    private let context: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
     
     func salvarTipoDespesa() {
         
-        if nome.isEmpty {
+        if nomeTipoDespesa.isEmpty {
             errorMessage = "O nome do tipo de despesa é obrigatório."
             return
         }
         
         let newTipoDespesa = TipoDespesaEntity(context: context)
         newTipoDespesa.id = UUID()
-        newTipoDespesa.nome = nome
+        newTipoDespesa.nome = nomeTipoDespesa
         newTipoDespesa.cor = selectedColor.toHex()
         
         do {

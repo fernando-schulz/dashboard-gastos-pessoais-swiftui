@@ -25,4 +25,8 @@ struct PersistenceController {
             }
         }
     }
+    
+    var context: NSManagedObjectContext {
+        container.viewContext
+    }
 }

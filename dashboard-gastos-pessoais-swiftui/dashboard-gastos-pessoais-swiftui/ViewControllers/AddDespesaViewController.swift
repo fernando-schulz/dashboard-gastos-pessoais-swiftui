@@ -2,39 +2,34 @@
 //  AddTipoDespesaViewController.swift
 //  dashboard-gastos-pessoais-swiftui
 //
-//  Created by Fernando Schulz on 23/04/25.
+//  Created by Fernando Schulz on 24/04/25.
 //
 
 import SwiftUI
 
-struct AddTipoDespesaViewController: View {
+struct AddDespesaViewController: View {
     
-    @ObservedObject var viewModel: AddTipoDespesaViewModel
+    @ObservedObject var viewModel: AddDespesaViewModel
     @Binding var showModal: Bool
     @State private var showErrorAlert: Bool = false
     
     var body: some View {
         VStack {
-            Text("Adicionar Tipo Despesa")
+            Text("Adicionar Despesa")
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundColor(Color("TextColor"))
                 .padding(.bottom, 25)
             
-            CustomTextField(label: "Nome", text: $viewModel.nomeTipoDespesa) {
-                TextField("Nome", text: $viewModel.nomeTipoDespesa)
+            CustomTextField(label: "Descrição", text: $viewModel.descricao) {
+                TextField("Descrição", text: $viewModel.descricao)
                     .foregroundColor(.white)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
             }
             
-            ColorPicker("Escolha uma cor", selection: $viewModel.selectedColor)
-                .padding()
-                .foregroundColor(Color("TextColor"))
-                .padding(.bottom, 20)
-            
             Button(action: {
-                viewModel.salvarTipoDespesa()
+                viewModel.salvarDespesa()
                 
                 if viewModel.errorMessage != nil {
                     showErrorAlert = true
@@ -50,14 +45,14 @@ struct AddTipoDespesaViewController: View {
             .frame(width: 175, height: 40)
             .background(Color("Secondary"))
             .cornerRadius(20)
-            .accessibilityIdentifier("Salvar Tipo Despesa")
+            .accessibilityIdentifier("Salvar Despesa")
             
             Spacer()
         }
         .alert(isPresented: $showErrorAlert) {
             Alert(
                 title: Text("Erro"),
-                message: Text(viewModel.errorMessage ?? "Não foi possível salvar o tipo de despesa."),
+                message: Text(viewModel.errorMessage ?? "Não foi possível salvar a despesa despesa."),
                 dismissButton: .default(Text("OK"), action: {
                     viewModel.errorMessage = nil
                     showErrorAlert = false
@@ -71,15 +66,15 @@ struct AddTipoDespesaViewController: View {
 }
 
 #Preview {
-    AddTipoDespesaViewControllerPreview()
+    AddDespesaViewControllerPreview()
 }
 
-struct AddTipoDespesaViewControllerPreview: View {
+struct AddDespesaViewControllerPreview: View {
 
     @State private var showModal: Bool = true
     
     var body: some View {
-        AddTipoDespesaViewController(viewModel: AddTipoDespesaViewModel(context: PersistenceController.shared.context), showModal: $showModal)
+        AddDespesaViewController(viewModel: AddDespesaViewModel(context: PersistenceController.shared.context), showModal: $showModal)
     }
     
 }
