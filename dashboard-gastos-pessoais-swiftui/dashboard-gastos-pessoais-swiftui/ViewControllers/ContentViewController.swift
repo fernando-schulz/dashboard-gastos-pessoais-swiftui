@@ -24,6 +24,11 @@ struct ContentViewController: View {
                 Spacer()
 
                 Menu {
+                    
+                    Button("Adicionar Despesa", action: {
+                        viewModel.toogleShowModalAddDespesa()
+                    })
+                    
                     Button(
                         "Adicionar Tipo Despesa",
                         action: {
@@ -71,6 +76,9 @@ struct ContentViewController: View {
                         viewModel: AddTipoDespesaViewModel(context: context),
                         showModal: $viewModel.showModalAddTipoDespesa
                     )
+                }
+                .sheet(isPresented: $viewModel.showModalAddDespesa) {
+                    AddDespesaViewController(viewModel: AddDespesaViewModel(context: context), showModal: $viewModel.showModalAddDespesa)
                 }
             }
 

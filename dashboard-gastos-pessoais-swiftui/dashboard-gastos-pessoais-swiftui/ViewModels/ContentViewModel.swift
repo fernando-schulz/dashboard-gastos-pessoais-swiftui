@@ -10,8 +10,13 @@ import Foundation
 class ContentViewModel: ObservableObject {
     
     @Published var showModalAddTipoDespesa: Bool = false
+    @Published var showModalAddDespesa: Bool = false
     
     func toogleShowModalAddTipoDespesa() {
         self.showModalAddTipoDespesa.toggle()
+    }
+    
+    func toogleShowModalAddDespesa() {
+        self.showModalAddDespesa.toggle()
     }
 }

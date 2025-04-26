@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 extension Color {
+
     func toHex() -> String? {
         let uiColor = UIColor(self)
         var red: CGFloat = 0
