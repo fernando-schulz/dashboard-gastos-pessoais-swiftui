@@ -46,9 +46,20 @@ class AddDespesaViewModel: ObservableObject {
             errorMessage = "Informe uma descrição para a despesa."
             return
         }
-
-        let newDespesa = DespesaEntity(context: context)
-        newDespesa.id = UUID()
+        
+        if let tipoSelecionado = tipoSelecionado {            
+            let fetchRequest: NSFetchRequest<TipoDespesaEntity> = TipoDespesaEntity.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", tipoSelecionado.id as CVarArg)
+            
+            if let tipoEncontrado = try? context.fetch(fetchRequest).first {
+                let newDespesa = DespesaEntity(context: context)
+                newDespesa.id = UUID()
+                newDespesa.data = dataSelecionada
+                newDespesa.descricao = descricao
+                newDespesa.tipo = tipoEncontrado
+                newDespesa.valor  = valorText.currencyToDouble()
+            }
+        }
 
         do {
             try context.save()

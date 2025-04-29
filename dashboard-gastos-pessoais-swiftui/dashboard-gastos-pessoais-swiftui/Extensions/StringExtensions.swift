@@ -19,4 +19,16 @@ extension String {
         
         return formatter.string(from: NSNumber(value: doubleValue)) ?? "R$ 0,00"
     }
+    
+    func currencyToDouble() -> Double {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: "pt_BR")
+        
+        if let number = formatter.number(from: self) {
+            return number.doubleValue
+        }
+        
+        return 0
+    }
 }
