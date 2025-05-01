@@ -36,8 +36,10 @@ class AddDespesaViewModel: ObservableObject {
         
         /*
          
-         Terminar visual da tela
-         Terminar desenvolver salvar despesa
+         Terminar visual da tela de adicionar despesa
+         Formatar campo valor da lista de despesas
+         forma de excluir despesas
+         fazer conversao do mock para despesaEntity pra buscar salvas no banco de dados também
          
          */
         guard let context = context else { return }
