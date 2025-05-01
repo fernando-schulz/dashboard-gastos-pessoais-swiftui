@@ -15,8 +15,14 @@ struct AddTipoDespesaViewController: View {
     
     var body: some View {
         VStack {
-            CustomTextField(label: "Nome", text: $viewModel.nome) {
-                TextField("Nome", text: $viewModel.nome)
+            Text("Adicionar Tipo Despesa")
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundColor(Color("TextColor"))
+                .padding(.bottom, 25)
+            
+            CustomTextField(label: "Nome", text: $viewModel.nomeTipoDespesa) {
+                TextField("Nome", text: $viewModel.nomeTipoDespesa)
                     .foregroundColor(.white)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
@@ -25,6 +31,7 @@ struct AddTipoDespesaViewController: View {
             ColorPicker("Escolha uma cor", selection: $viewModel.selectedColor)
                 .padding()
                 .foregroundColor(Color("TextColor"))
+                .padding(.bottom, 20)
             
             Button(action: {
                 viewModel.salvarTipoDespesa()
@@ -33,6 +40,8 @@ struct AddTipoDespesaViewController: View {
                     showErrorAlert = true
                     return
                 }
+                
+                showModal = false
             }) {
                 Text("Salvar")
                     .foregroundColor(Color("TextColor"))
@@ -66,11 +75,11 @@ struct AddTipoDespesaViewController: View {
 }
 
 struct AddTipoDespesaViewControllerPreview: View {
-    
+
     @State private var showModal: Bool = true
     
     var body: some View {
-        AddTipoDespesaViewController(viewModel: AddTipoDespesaViewModel(), showModal: $showModal)
+        AddTipoDespesaViewController(viewModel: AddTipoDespesaViewModel(context: PersistenceController.shared.context), showModal: $showModal)
     }
     
 }
