@@ -126,7 +126,7 @@ struct ContentViewController: View {
             List {
                 Section {
                     ForEach(viewModel.despesas) { despesa in
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading) {
                             HStack {
                                 Text(despesa.descricao)
                                     .font(.headline)
@@ -136,11 +136,10 @@ struct ContentViewController: View {
                                 
                                 Spacer()
                                 
-                                Text(despesa.tipo.nome)
+                                Text("\(despesa.valor.formatted(.currency(code: "BRL").precision(.fractionLength(2))))")
                                     .font(.subheadline)
-                                    .foregroundColor(
-                                        Color(hex: despesa.tipo.cor)
-                                    )
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(Color("TextColor"))
                             }
 
                             HStack {
@@ -149,21 +148,22 @@ struct ContentViewController: View {
                                     .foregroundColor(Color("TextColor"))
                                 
                                 Spacer()
-                                
-                                Text("R$ \(despesa.valor)")
+
+                                Text(despesa.tipo.nome)
                                     .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color("TextColor"))
+                                    .foregroundColor(
+                                        Color(hex: despesa.tipo.cor)
+                                    )
                             }
-                            
-                            Divider()
-                                .background(Color("TextColor").opacity(0.3))
                         }
-                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color("Primary"))
+                        .cornerRadius(12)
                     }
                 }
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
             }
             .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)
@@ -177,6 +177,6 @@ struct ContentViewController: View {
 
 #Preview {
     ContentViewController(
-        viewModel: ContentViewModel(mockDespesas: despesasMock)
+        viewModel: ContentViewModel(context: PersistenceController.shared.context, mockDespesas: despesasMock)
     )
 }

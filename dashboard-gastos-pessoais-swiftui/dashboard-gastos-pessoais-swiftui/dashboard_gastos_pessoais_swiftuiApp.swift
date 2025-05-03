@@ -13,7 +13,7 @@ struct dashboard_gastos_pessoais_swiftuiApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentViewController(viewModel: ContentViewModel())
+            ContentViewController(viewModel: ContentViewModel(context: PersistenceController.shared.context))
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

@@ -13,7 +13,17 @@ class ContentViewModel: ObservableObject {
     @Published var showModalAddDespesa: Bool = false
     @Published var despesas: [DespesaMock] = []
     
-    init(mockDespesas: [DespesaMock]? = nil) {
+    private let context: NSManagedObjectContext?
+    
+    /*
+        - excluir despesa
+        - criar gráfico pizza
+     */
+    
+    init(context: NSManagedObjectContext? = nil, mockDespesas: [DespesaMock]? = nil) {
+        
+        self.context = context
+        
         if let mockDespesas = mockDespesas {
             self.despesas = mockDespesas
         } else {
@@ -30,9 +40,21 @@ class ContentViewModel: ObservableObject {
     }
     
     func carregarDespesas() {
-        let request: NSFetchRequest<DespesaEntity> = DespesaEntity.fetchRequest()
+        guard let context = context else { return }
+        
+        let fetchRequest: NSFetchRequest<DespesaEntity> = DespesaEntity.fetchRequest()
         do {
-            
+            let resultados = try context.fetch(fetchRequest)
+
+            self.despesas = resultados.map { entity in
+                DespesaMock(
+                    id: entity.id ?? UUID(),
+                    descricao: entity.descricao ?? "Sem descrição",
+                    valor: entity.valor,
+                    data: entity.data ?? Date(),
+                    tipo: TipoDespesaMock(id: entity.tipo?.id ?? UUID(), nome: entity.tipo?.nome ?? "Sem nome", cor: entity.tipo?.cor ?? "Sem cor")
+                )
+            }
         } catch {
             print("Erro ao buscar despesas. \(error.localizedDescription)")
         }
