@@ -126,7 +126,10 @@ struct ContentViewController: View {
             List {
                 Section {
                     ForEach(viewModel.despesas) { despesa in
-                        VStack(alignment: .leading) {
+                        DespesaRowView(despesa: despesa) {
+                            viewModel.deletarDespesa()
+                        }
+                        /*VStack(alignment: .leading) {
                             HStack {
                                 Text(despesa.descricao)
                                     .font(.headline)
@@ -159,6 +162,15 @@ struct ContentViewController: View {
                         .padding()
                         .background(Color("Primary"))
                         .cornerRadius(12)
+                        .swipeActions(content: .trailing) {
+                            Button(role: .destructive) {
+                                withAnimation {
+                                    viewModel.deletarDespesa()
+                                }
+                            } label: {
+                                Label("Deletar", systemImage: "trash")
+                            }
+                        }*/
                     }
                 }
                 .listRowBackground(Color.clear)

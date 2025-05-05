@@ -59,4 +59,8 @@ class ContentViewModel: ObservableObject {
             print("Erro ao buscar despesas. \(error.localizedDescription)")
         }
     }
+    
+    func deletarDespesa() {
+        
+    }
 }
