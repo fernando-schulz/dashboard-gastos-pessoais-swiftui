@@ -15,6 +15,9 @@ struct ContentViewController: View {
 
     var body: some View {
         VStack {
+            
+            GraficoTipoDespesasView(dados: viewModel.despesasPorTipo)
+            
             HStack {
                 Text("Despesas")
                     .font(.title)
@@ -68,36 +71,6 @@ struct ContentViewController: View {
                             }
                         }
                     )*/
-
-                    Button(
-                        "Teste Despesa",
-                        action: {
-                            let request: NSFetchRequest<DespesaEntity> =
-                                DespesaEntity.fetchRequest()
-                            do {
-                                let results = try context.fetch(request)
-                                results.forEach { despesa in
-                                    print(
-                                        "🔎 Descrição: \(despesa.descricao ?? "") - Valor: \(despesa.valor)"
-                                    )
-                                    /*context.delete(tipo)
-                                    
-                                    do {
-                                        try context.save()
-                                        print(
-                                            "✅ Tipo de despesa excluído com sucesso."
-                                        )
-                                    } catch {
-                                        print(
-                                            "❌ Erro ao excluir tipo de despesa: \(error.localizedDescription)"
-                                        )
-                                    }*/
-                                }
-                            } catch {
-                                print("Erro ao buscar tipos: \(error)")
-                            }
-                        }
-                    )
                 } label: {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
@@ -112,8 +85,9 @@ struct ContentViewController: View {
                 }
                 .sheet(isPresented: $viewModel.showModalAddDespesa) {
                     AddDespesaViewController(
-                        viewModel: AddDespesaViewModel(context: context),
-                        showModal: $viewModel.showModalAddDespesa
+                        viewModel: AddDespesaViewModel(context: context, onSave: { viewModel.carregarDespesas() }),
+                        showModal: $viewModel.showModalAddDespesa,
+                        
                     )
                 }
             }
@@ -127,50 +101,8 @@ struct ContentViewController: View {
                 Section {
                     ForEach(viewModel.despesas) { despesa in
                         DespesaRowView(despesa: despesa) {
-                            viewModel.deletarDespesa()
+                            viewModel.deletarDespesa(despesa: despesa)
                         }
-                        /*VStack(alignment: .leading) {
-                            HStack {
-                                Text(despesa.descricao)
-                                    .font(.headline)
-                                    .foregroundColor(
-                                        Color(hex: despesa.tipo.cor)
-                                    )
-                                
-                                Spacer()
-                                
-                                Text("\(despesa.valor.formatted(.currency(code: "BRL").precision(.fractionLength(2))))")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color("TextColor"))
-                            }
-
-                            HStack {
-                                Text(despesa.data, style: .date)
-                                    .font(.footnote)
-                                    .foregroundColor(Color("TextColor"))
-                                
-                                Spacer()
-
-                                Text(despesa.tipo.nome)
-                                    .font(.subheadline)
-                                    .foregroundColor(
-                                        Color(hex: despesa.tipo.cor)
-                                    )
-                            }
-                        }
-                        .padding()
-                        .background(Color("Primary"))
-                        .cornerRadius(12)
-                        .swipeActions(content: .trailing) {
-                            Button(role: .destructive) {
-                                withAnimation {
-                                    viewModel.deletarDespesa()
-                                }
-                            } label: {
-                                Label("Deletar", systemImage: "trash")
-                            }
-                        }*/
                     }
                 }
                 .listRowBackground(Color.clear)

@@ -16,12 +16,15 @@ class AddDespesaViewModel: ObservableObject {
     @Published var dataSelecionada: Date = Date()
     @Published var tiposDespesas: [TipoDespesaMock] = []
     @Published var tipoSelecionado: TipoDespesaMock?
+    
+    var onSave: (() -> Void)?
 
     private let context: NSManagedObjectContext?
 
     init(
         context: NSManagedObjectContext? = nil,
-        mockTipoDespesas: [TipoDespesaMock]? = nil
+        mockTipoDespesas: [TipoDespesaMock]? = nil,
+        onSave: (() -> Void)? = nil
     ) {
         self.context = context
 
@@ -30,6 +33,8 @@ class AddDespesaViewModel: ObservableObject {
         } else {
             carregarTiposDespesas()
         }
+        
+        self.onSave = onSave
     }
 
     func salvarDespesa() {
@@ -56,6 +61,7 @@ class AddDespesaViewModel: ObservableObject {
 
         do {
             try context.save()
+            onSave?()
         } catch {
             print("Erro ao salvar despesa: \(error.localizedDescription)")
         }
