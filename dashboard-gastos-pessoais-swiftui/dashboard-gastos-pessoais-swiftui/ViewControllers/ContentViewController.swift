@@ -16,8 +16,6 @@ struct ContentViewController: View {
     var body: some View {
         VStack {
             
-            GraficoTipoDespesasView(dados: viewModel.despesasPorTipo)
-            
             HStack {
                 Text("Despesas")
                     .font(.title)
@@ -91,8 +89,18 @@ struct ContentViewController: View {
                     )
                 }
             }
-
-            Spacer()
+            
+            VStack {
+                Text("Total: \(viewModel.totalGastos.formatted(.currency(code: "BRL").precision(.fractionLength(2))))")
+                    .foregroundColor(Color("TextColor"))
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                GraficoTipoDespesasView(dados: viewModel.despesasPorTipo)
+            }
+            .padding()
+            .background(Color("Primary"))
+            .cornerRadius(12)
             
             Divider()
                 .background(Color("TextColor"))
@@ -121,6 +129,6 @@ struct ContentViewController: View {
 
 #Preview {
     ContentViewController(
-        viewModel: ContentViewModel(context: PersistenceController.shared.context, mockDespesas: despesasMock)
+        viewModel: ContentViewModel(context: PersistenceController.shared.context, mockDespesas: despesasMock, mockDespesasPorTipo: despesaPorTipoMock)
     )
 }
