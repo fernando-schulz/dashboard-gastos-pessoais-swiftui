@@ -7,6 +7,7 @@ Projeto de um **app para controle de gastos pessoais** utilizando a arquitetura 
 - Persistência de dados local com **CoreData**;
 - Arquitetura **MVVM** para separação de responsabilidades;
 - Implementação de interfaces com **SwiftUI**;
+- Implementação de componente TextField customizado para melhor apresentação na UI
 - Utilização de bibliotecas nativas para manipulação de datas;
 - Utilização de bibliotecas nativas para manipulação de cores;
 - Extensions para formatação de datas, currency e conversão das cores para hexadecimal
