@@ -15,6 +15,8 @@ struct DespesaMock: Identifiable, Hashable {
     var tipo: TipoDespesaMock
 }
 
+let despesaMock: DespesaMock = DespesaMock(descricao: "Almoço no restaurante", valor: 35.50, data: Date(), tipo: tipoDespesasMock[0])
+
 let despesasMock: [DespesaMock] = [
     DespesaMock(descricao: "Almoço no restaurante", valor: 35.50, data: Date(), tipo: tipoDespesasMock[0]),
     DespesaMock(descricao: "Uber para casa", valor: 18.00, data: Date(), tipo: tipoDespesasMock[1]),

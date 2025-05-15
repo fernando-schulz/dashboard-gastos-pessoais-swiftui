@@ -16,12 +16,15 @@ class AddDespesaViewModel: ObservableObject {
     @Published var dataSelecionada: Date = Date()
     @Published var tiposDespesas: [TipoDespesaMock] = []
     @Published var tipoSelecionado: TipoDespesaMock?
+    
+    var onSave: (() -> Void)?
 
     private let context: NSManagedObjectContext?
 
     init(
         context: NSManagedObjectContext? = nil,
-        mockTipoDespesas: [TipoDespesaMock]? = nil
+        mockTipoDespesas: [TipoDespesaMock]? = nil,
+        onSave: (() -> Void)? = nil
     ) {
         self.context = context
 
@@ -30,22 +33,25 @@ class AddDespesaViewModel: ObservableObject {
         } else {
             carregarTiposDespesas()
         }
+        
+        self.onSave = onSave
     }
 
     func salvarDespesa() {
-        
-        /*
-         
-         Terminar visual da tela de adicionar despesa
-         Formatar campo valor da lista de despesas
-         forma de excluir despesas
-         fazer conversao do mock para despesaEntity pra buscar salvas no banco de dados também
-         
-         */
         guard let context = context else { return }
 
         if descricao.isEmpty {
             errorMessage = "Informe uma descrição para a despesa."
+            return
+        }
+        
+        if valorText.isEmpty {
+            errorMessage = "Informe um valor para a despesa."
+            return
+        }
+        
+        if tipoSelecionado == nil {
+            errorMessage = "Selecione um tipo de despesa."
             return
         }
         
@@ -65,6 +71,7 @@ class AddDespesaViewModel: ObservableObject {
 
         do {
             try context.save()
+            onSave?()
         } catch {
             print("Erro ao salvar despesa: \(error.localizedDescription)")
         }

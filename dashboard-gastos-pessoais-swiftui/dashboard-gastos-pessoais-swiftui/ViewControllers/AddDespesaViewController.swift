@@ -14,7 +14,7 @@ struct AddDespesaViewController: View {
     @State private var showErrorAlert: Bool = false
 
     var body: some View {
-        VStack {
+        VStack() {
             Text("Adicionar Despesa")
                 .font(.title3)
                 .fontWeight(.bold)
@@ -27,6 +27,7 @@ struct AddDespesaViewController: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
             }
+            .padding(.bottom, 5)
             
             CustomTextField(label: "Valor", text: $viewModel.valorText) {
                 TextField("Valor", text: $viewModel.valorText)
@@ -36,6 +37,7 @@ struct AddDespesaViewController: View {
                     }
                     .keyboardType(.decimalPad)
             }
+            .padding(.bottom, 10)
 
             DatePicker(
                 "Data",
@@ -45,6 +47,7 @@ struct AddDespesaViewController: View {
             .datePickerStyle(.compact)
             .padding(2)
             .colorScheme(.dark)
+            .padding(.bottom, 10)
 
             HStack {
                 
@@ -62,6 +65,7 @@ struct AddDespesaViewController: View {
                     }
                 }
             }
+            .padding(.bottom, 25)
 
             Button(action: {
                 viewModel.salvarDespesa()
