@@ -33,7 +33,6 @@ class ContentViewModel: ObservableObject {
 
         if let mockDespesas = mockDespesas {
             self.despesas = mockDespesas
-            //self.despesasPorTipo = despesasPorTipo ?? []
         } else {
             carregarDespesas()
         }
@@ -102,6 +101,29 @@ class ContentViewModel: ObservableObject {
             print("Erro ao deletar despesa: \(error.localizedDescription)")
         }
     }
+    
+    func deletarDespesas() {
+        guard let context = context else { return }
+        
+        let request: NSFetchRequest<DespesaEntity> = DespesaEntity.fetchRequest()
+        do {
+            let results = try context.fetch(request)
+            results.forEach { despesa in
+                context.delete(despesa)
+
+                do {
+                    try context.save()
+                    print("✅ Despesas excluídas com sucesso.")
+                    carregarDespesas()
+                    calcularGastosPorTipo()
+                } catch {
+                    print("❌ Erro ao excluir despesas: \(error.localizedDescription)")
+                }
+            }
+        } catch {
+            print("Erro ao buscar despesas: \(error)")
+        }
+    }
 
     func calcularGastosPorTipo() {
         guard let context = context else { return }
@@ -130,5 +152,15 @@ class ContentViewModel: ObservableObject {
         } catch {
             print("Erro ao buscar despesas. \(error.localizedDescription)")
         }
+    }
+    
+    var despesasAgrupadasPorDia: [(data: Date, despesas: [DespesaMock])] {
+        let agrupado = Dictionary(grouping: despesas) { despesa in
+            Calendar.current.startOfDay(for: despesa.data)
+        }
+        
+        return agrupado
+            .map { ($0.key, $0.value )}
+            .sorted { $0.data > $1.data }
     }
 }

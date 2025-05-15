@@ -40,35 +40,12 @@ struct ContentViewController: View {
                         }
                     )
 
-                    /*Button(
-                        "Teste Tipo Despesa",
+                    Button(
+                        "Excluir Despesas",
                         action: {
-                            let request: NSFetchRequest<TipoDespesaEntity> =
-                                TipoDespesaEntity.fetchRequest()
-                            do {
-                                let results = try context.fetch(request)
-                                results.forEach { tipo in
-                                    print(
-                                        "🔎 Tipo: \(tipo.nome ?? "") - Cor: \(tipo.cor ?? "")"
-                                    )
-                                    /*context.delete(tipo)
-                    
-                                    do {
-                                        try context.save()
-                                        print(
-                                            "✅ Tipo de despesa excluído com sucesso."
-                                        )
-                                    } catch {
-                                        print(
-                                            "❌ Erro ao excluir tipo de despesa: \(error.localizedDescription)"
-                                        )
-                                    }*/
-                                }
-                            } catch {
-                                print("Erro ao buscar tipos: \(error)")
-                            }
+                            viewModel.deletarDespesas()
                         }
-                    )*/
+                    )
                 } label: {
                     Image(systemName: "ellipsis")
                         .imageScale(.large)
@@ -83,7 +60,9 @@ struct ContentViewController: View {
                 }
                 .sheet(isPresented: $viewModel.showModalAddDespesa) {
                     AddDespesaViewController(
-                        viewModel: AddDespesaViewModel(context: context, onSave: { viewModel.carregarDespesas() }),
+                        viewModel: AddDespesaViewModel(context: context, onSave: { viewModel.carregarDespesas()
+                            viewModel.calcularGastosPorTipo()
+                        }),
                         showModal: $viewModel.showModalAddDespesa,
                         
                     )
@@ -93,7 +72,7 @@ struct ContentViewController: View {
             VStack {
                 Text("Total: \(viewModel.totalGastos.formatted(.currency(code: "BRL").precision(.fractionLength(2))))")
                     .foregroundColor(Color("TextColor"))
-                    .font(.title2)
+                    .font(.title3)
                     .fontWeight(.bold)
                 
                 GraficoTipoDespesasView(dados: viewModel.despesasPorTipo)
@@ -106,16 +85,23 @@ struct ContentViewController: View {
                 .background(Color("TextColor"))
 
             List {
-                Section {
-                    ForEach(viewModel.despesas) { despesa in
-                        DespesaRowView(despesa: despesa) {
-                            viewModel.deletarDespesa(despesa: despesa)
+                ForEach(viewModel.despesasAgrupadasPorDia, id: \.data) { grupo in
+                    Section(
+                        header: Text(grupo.data.formatted(date: .abbreviated, time: .omitted))
+                            .foregroundColor(Color("TextColor"))
+                            .font(.subheadline)
+                    ) {
+                        ForEach(grupo.despesas) { despesa in
+                            DespesaRowView(despesa: despesa) {
+                                viewModel.deletarDespesa(despesa: despesa)
+                            }
                         }
                     }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
+            
             }
             .listStyle(PlainListStyle())
             .scrollContentBackground(.hidden)

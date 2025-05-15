@@ -24,6 +24,7 @@ struct GraficoTipoDespesasView: View {
                     .foregroundStyle(Color(hex: item.cor))
             }
         }
+        .frame(width: 175, height: 175)
         
         LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
             ForEach(dados, id: \.nome) { item in

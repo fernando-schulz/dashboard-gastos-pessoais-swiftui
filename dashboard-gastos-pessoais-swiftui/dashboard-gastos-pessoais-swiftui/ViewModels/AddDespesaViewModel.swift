@@ -45,6 +45,16 @@ class AddDespesaViewModel: ObservableObject {
             return
         }
         
+        if valorText.isEmpty {
+            errorMessage = "Informe um valor para a despesa."
+            return
+        }
+        
+        if tipoSelecionado == nil {
+            errorMessage = "Selecione um tipo de despesa."
+            return
+        }
+        
         if let tipoSelecionado = tipoSelecionado {            
             let fetchRequest: NSFetchRequest<TipoDespesaEntity> = TipoDespesaEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", tipoSelecionado.id as CVarArg)
